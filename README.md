@@ -2,7 +2,7 @@
 
 FoxTerm APP 专用 Swift Foundation 扩展库，提供类型转换、字节操作、颜色、网络、日期等常用扩展方法。
 
-> 本库为 [FoxTerm](https://foxterm.app/) APP 专用核心组件。如需使用完整功能，请下载 FoxTerm 客户端：[https://foxterm.app/](https://foxterm.app/)
+> 本库为 [FoxTerm](https://foxterm.app/) APP 专用核心组件，欢迎下载使用：[https://foxterm.app/](https://foxterm.app/)
 
 ## 模块
 
