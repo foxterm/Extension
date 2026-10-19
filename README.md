@@ -1,131 +1,133 @@
 # Extension
 
-FoxTerm APP 专用 Swift Foundation 扩展库，提供类型转换、字节操作、颜色、网络、日期等常用扩展方法。
+[English](README.md) | [中文文档](README_CN.md)
 
-> 本库为 [FoxTerm](https://foxterm.app/) APP 专用核心组件，欢迎下载使用：[https://foxterm.app/](https://foxterm.app/)
+A dedicated Swift Foundation extension library for the FoxTerm APP, providing commonly used extension methods for type conversion, byte operations, color, networking, date handling, and more.
 
-## 模块
+> This library is a dedicated core component for the [FoxTerm](https://foxterm.app/) APP. Feel free to download it: [https://foxterm.app/](https://foxterm.app/)
 
-| 文件 | 功能 |
-|------|------|
-| `Buffer.swift` | 泛型 C 缓冲区封装（`Buffer<T>`、`BufferData<V, L>`） |
-| `Bytes.swift` | 字节单位格式化（IEC 二进制 / SI 十进制 / 速率） |
-| `String+.swift` | UTF-8 字节转换、C 字符串安全互操作、十六进制颜色 |
-| `Data+.swift` | Data ↔ String/Bool/Hex 转换、C 指针安全访问 |
-| `Integer+.swift` | 整数类型安全转换（int16/int32/int64/uint32 等截断保护） |
-| `CChar+.swift` | CChar 指针 → String 安全转换 |
-| `RawPointer+.swift` | 原始指针便捷扩展 |
-| `Color+.swift` | SwiftUI Color 扩展（RGB/HSB 组件提取） |
-| `Color+HEX.swift` | 十六进制颜色字符串 ↔ Color 互转 |
-| `IP.swift` | IP 地址类型别名与私有地址判断（IPv4/IPv6） |
-| `Net.swift` | 域名解析、host:port 拼接、网卡信息获取 |
-| `Bundle.swift` | Bundle 信息便捷访问 |
-| `OutputStream+.swift` | OutputStream 写入扩展 |
-| `Task+.swift` | Swift Concurrency Task 扩展 |
-| `DateExtensions.swift` | 日期格式化与解析 |
-| `DateHelper.swift` | 日期辅助工具 |
-| `io.swift` | 文件 I/O 与路径工具（knownHosts 等） |
+## Modules
 
-## 环境要求
+| File | Description |
+|------|-------------|
+| `Buffer.swift` | Generic C buffer wrapper (`Buffer<T>`, `BufferData<V, L>`) |
+| `Bytes.swift` | Byte unit formatting (IEC binary / SI decimal / rate) |
+| `String+.swift` | UTF-8 byte conversion, C string safe interop, hex color |
+| `Data+.swift` | Data ↔ String/Bool/Hex conversion, C pointer safe access |
+| `Integer+.swift` | Safe integer type conversion (truncation protection for int16/int32/int64/uint32, etc.) |
+| `CChar+.swift` | CChar pointer → String safe conversion |
+| `RawPointer+.swift` | Raw pointer convenience extensions |
+| `Color+.swift` | SwiftUI Color extensions (RGB/HSB component extraction) |
+| `Color+HEX.swift` | Hex color string ↔ Color conversion |
+| `IP.swift` | IP address type aliases and private address detection (IPv4/IPv6) |
+| `Net.swift` | Domain resolution, host:port joining, network interface info |
+| `Bundle.swift` | Bundle info convenience access |
+| `OutputStream+.swift` | OutputStream write extensions |
+| `Task+.swift` | Swift Concurrency Task extensions |
+| `DateExtensions.swift` | Date formatting and parsing |
+| `DateHelper.swift` | Date helper utilities |
+| `io.swift` | File I/O and path utilities (knownHosts, etc.) |
 
-| 平台 | 最低版本 |
-|------|---------|
-| iOS  | 17.0    |
-| macOS | 14.0   |
-| Swift | 5.10   |
+## Requirements
 
-## 安装
+| Platform | Minimum Version |
+|----------|-----------------|
+| iOS      | 17.0            |
+| macOS    | 14.0            |
+| Swift    | 5.10            |
+
+## Installation
 
 ```ruby
 pod 'Extension', :git => 'https://github.com/foxterm/Extension.git'
 ```
 
-### 依赖
+### Dependencies
 
-- [libetos](https://github.com/foxterm/libetos) — C 缓冲区底层实现
+- [libetos](https://github.com/foxterm/libetos) — C buffer underlying implementation
 
-## 使用
+## Usage
 
-### Buffer — C 内存缓冲区
+### Buffer — C Memory Buffer
 
 ```swift
-let buf = Buffer<CChar>(64)      // 64 个 CChar 容量
+let buf = Buffer<CChar>(64)      // 64 CChar capacity
 let ptr = buf.buffer              // UnsafeMutablePointer<CChar>
-let data = buf.data(32)           // 读取前 32 字节为 Data
+let data = buf.data(32)           // Read first 32 bytes as Data
 
-// 组合长度+数据缓冲区
+// Combined length + data buffer
 let pair = BufferData<UInt8, UInt32>(4096)
 pair.len.buffer.pointee = UInt32(receivedBytes)
-let payload = pair.data           // 按 len 值读取 Data
+let payload = pair.data           // Read Data by len value
 ```
 
-### Bytes — 字节格式化
+### Bytes — Byte Formatting
 
 ```swift
 let bytes = Bytes.shared
-bytes.format(31323)              // "30.59KiB"（默认 IEC 二进制）
+bytes.format(31323)              // "30.59KiB" (IEC binary by default)
 bytes.formatBinary(1048576)      // "1.00MiB"
 bytes.formatDecimal(1000000)     // "1.00MB"
 bytes.formatRate(1500000)        // "1.50Mbps"
 ```
 
-### String 扩展
+### String Extensions
 
 ```swift
 "hello".bytesData                // Data (UTF-8)
-"hello".bytesArray               // [UInt8]（带 \0，用于 C 接口）
-"hello".cStringBytes             // [CChar]（带 \0）
+"hello".bytesArray               // [UInt8] (with \0, for C interfaces)
+"hello".cStringBytes             // [CChar] (with \0)
 
-// 安全的 C 指针访问（自动释放）
+// Safe C pointer access (auto-released)
 "hello".withCStringPointer { ptr in
     c_function(ptr)
 }
 
-// 十六进制颜色
+// Hex color
 "#FF5733".color                  // Color
 ```
 
-### Data 扩展
+### Data Extensions
 
 ```swift
 data.string                      // UTF-8 String?
-data.hex                         // 十六进制字符串
-data.bool                        // 单字节 → Bool
+data.hex                         // Hex string
+data.bool                        // Single byte → Bool
 ```
 
-### Integer 扩展
+### Integer Extensions
 
 ```swift
 let value: Int = 42
-value.int32                      // Int32（截断保护）
+value.int32                      // Int32 (truncation protection)
 value.uint32                     // UInt32
 value.int64                      // Int64
-value.bytes                      // [UInt8] 原始字节
+value.bytes                      // [UInt8] raw bytes
 
-// 安全指针访问
+// Safe pointer access
 value.withUnsafeRawPointer { ptr in
-    // 使用 UnsafeRawPointer
+    // Use UnsafeRawPointer
 }
 ```
 
-### IP 与网络
+### IP & Networking
 
 ```swift
 "192.168.1.1".isPrivateIPv4     // true
 "fc00::1".isPrivateIPv6         // true
 
-// 域名解析
+// Domain resolution
 let ips = await Net.resolveDomainName("example.com")
 
-// 拼接 host:port（自动处理 IPv6 方括号）
+// Join host:port (automatically handles IPv6 brackets)
 Net.joinHostPort(host: "::1", port: 22)  // "[::1]:22"
 
-// 获取网卡信息
+// Get network interface info
 let interfaces = Net.getUniqueInterfaces()
 // [{ name: "en0", ip: "192.168.1.100" }]
 ```
 
-### Color 扩展
+### Color Extensions
 
 ```swift
 Color(hex: "#FF5733")            // Color from HEX
@@ -133,6 +135,6 @@ color.hexString                  // "#FF5733"
 color.rgb                        // (r: Double, g: Double, b: Double)
 ```
 
-## 许可证
+## License
 
 MIT
