@@ -38,6 +38,18 @@ A dedicated Swift Foundation extension library for the FoxTerm APP, providing co
 
 ## Installation
 
+### Swift Package Manager
+
+```swift
+.package(url: "https://github.com/foxterm/Extension.git", branch: "main"),
+```
+
+```swift
+.product(name: "Extension", package: "Extension"),
+```
+
+### CocoaPods
+
 ```ruby
 pod 'Extension', :git => 'https://github.com/foxterm/Extension.git'
 ```

@@ -38,6 +38,18 @@ FoxTerm APP 专用 Swift Foundation 扩展库，提供类型转换、字节操�
 
 ## 安装
 
+### Swift Package Manager
+
+```swift
+.package(url: "https://github.com/foxterm/Extension.git", branch: "main"),
+```
+
+```swift
+.product(name: "Extension", package: "Extension"),
+```
+
+### CocoaPods
+
 ```ruby
 pod 'Extension', :git => 'https://github.com/foxterm/Extension.git'
 ```
