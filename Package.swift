@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v14),
     ],
     products: [
-        .library(name: "Extension", targets: ["Extension"])
+        .library(name: "Extension", targets: ["Extension"]),
     ],
     dependencies: [
         .package(url: "https://github.com/foxterm/libetos.git", branch: "main"),
@@ -18,6 +18,6 @@ let package = Package(
         .target(
             name: "Extension",
             dependencies: ["libetos"]
-        )
+        ),
     ]
 )
