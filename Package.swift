@@ -17,7 +17,9 @@ let package = Package(
     targets: [
         .target(
             name: "Extension",
-            dependencies: ["libetos"]
+            dependencies: [
+                .product(name: "libetos", package: "libetos"),
+            ]
         ),
     ]
 )
