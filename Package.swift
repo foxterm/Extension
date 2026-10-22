@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "Extension", targets: ["Extension"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/foxterm/libetos.git", from: "1.0.1"),
+        .package(url: "https://github.com/foxterm/libetos.git", branch: "main"),
     ],
     targets: [
         .target(
